@@ -1,23 +1,57 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
-// Replace with your actual Geoapify API key
+// Your actual Geoapify API key
 const GEOAPIFY_API_KEY = 'ff9c233e5bd04c43877288681d51331f';
 
-// Define the agents (vehicles or workers)
+// Define the agents (vehicles or workers) with 4-day time windows (8 hours per day)
 const agents = [
     {
         start_location: [13.381453755359324, 52.520666399999996], // Start location (longitude, latitude)
-        time_windows: [[0, 14400]], // Agent availability in seconds (4 hours)
+        time_windows: [
+            [0, 28800],       // Day 1: Available for 8 hours (0 to 28,800 seconds)
+            [86400, 115200],  // Day 2: Available for 8 hours
+            [172800, 201600], // Day 3: Available for 8 hours
+            [259200, 288000]  // Day 4: Available for 8 hours
+        ],
         capabilities: ['plumbing', 'electrical'], // Skills of the agent
         id: 'agent1',
         description: 'Agent 1 - Plumbing and electrical work',
     },
     {
         start_location: [13.383333, 52.516667], // Start location (longitude, latitude)
-        time_windows: [[0, 14400]], // Available for 4 hours
+        time_windows: [
+            [0, 28800],       // Day 1: Available for 8 hours
+            [86400, 115200],  // Day 2: Available for 8 hours
+            [172800, 201600], // Day 3: Available for 8 hours
+            [259200, 288000]  // Day 4: Available for 8 hours
+        ],
         capabilities: ['carpentry'], // Skills of the agent
         id: 'agent2',
         description: 'Agent 2 - Carpentry work',
+    },
+    {
+        start_location: [13.385, 52.510], // New agent start location
+        time_windows: [
+            [0, 28800],       // Day 1: Available for 8 hours
+            [86400, 115200],  // Day 2: Available for 8 hours
+            [172800, 201600], // Day 3: Available for 8 hours
+            [259200, 288000]  // Day 4: Available for 8 hours
+        ],
+        capabilities: ['carpentry'], // Skills of the agent
+        id: 'agent3',
+        description: 'Agent 3 - Plumbing work',
+    },
+    {
+        start_location: [13.387, 52.518], // New agent start location
+        time_windows: [
+            [0, 28800],       // Day 1: Available for 8 hours
+            [86400, 115200],  // Day 2: Available for 8 hours
+            [172800, 201600], // Day 3: Available for 8 hours
+            [259200, 288000]  // Day 4: Available for 8 hours
+        ],
+        capabilities: ['electrical'], // Skills of the agent
+        id: 'agent4',
+        description: 'Agent 4 - Electrical work',
     }
 ];
 
@@ -36,6 +70,20 @@ const jobs = [
         requirements: ['carpentry'], // Required skill for the job
         id: 'job2',
         description: 'Carpentry work required at location 2',
+    },
+    {
+        location: [13.400, 52.515], // New job location
+        duration: 3600, // Duration of 1 hour
+        requirements: ['electrical'], // Required skill for the job
+        id: 'job3',
+        description: 'Electrical work required at location 3',
+    },
+    {
+        location: [13.395, 52.512], // New job location
+        duration: 5400, // Duration of 1.5 hours
+        requirements: ['plumbing'], // Required skill for the job
+        id: 'job4',
+        description: 'Plumbing work required at location 4',
     }
 ];
 
